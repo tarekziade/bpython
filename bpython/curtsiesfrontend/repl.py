@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import code
 import contextlib
 import errno
@@ -1124,10 +1126,10 @@ class Repl(BpythonRepl):
             info_max_rows = max(visible_space_above, visible_space_below)
             infobox = paint.paint_infobox(info_max_rows,
                                           int(width * self.config.cli_suggestion_width),
-                                          self.matches_iter.matches,
+                                          [s.decode('ascii') for s in self.matches_iter.matches],
                                           self.argspec,
-                                          self.current_match,
-                                          self.docstring,
+                                          None if self.current_match is None else self.current_match.decode('ascii'),
+                                          None if self.docstring is None else self.docstring.decode('utf8'),
                                           self.config,
                                           self.matches_iter.completer.format if self.matches_iter.completer else None)
 

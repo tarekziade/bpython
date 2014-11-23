@@ -22,6 +22,7 @@
 #
 
 from __future__ import with_statement
+from __future__ import unicode_literals
 import code
 import codecs
 import errno
@@ -72,7 +73,7 @@ class Interpreter(code.InteractiveInterpreter):
         def runsource(self, source, filename='<input>', symbol='single',
                       encode=True):
             if encode:
-                source = '# coding: %s\n%s' % (self.encoding,
+                source = b'# coding: %s\n%s' % (self.encoding,
                                                source.encode(self.encoding))
             return code.InteractiveInterpreter.runsource(self, source,
                                                          filename, symbol)
