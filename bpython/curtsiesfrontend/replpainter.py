@@ -7,7 +7,7 @@ from curtsies.bpythonparse import func_for_letter
 from curtsies.formatstring import linesplit
 from curtsies.fmtfuncs import bold
 
-from bpython._py3compat import py3
+from bpython._py3compat import py3, cast_unicode
 if not py3:
     import inspect
 
@@ -84,7 +84,7 @@ def formatted_argspec(argspec, columns, config):
     bolds = {token_color: lambda x: bold(token_color(x)),
             arg_color: lambda x: bold(arg_color(x))}
 
-    s = func_color(func.decode('utf8')) + arg_color(': (')
+    s = func_color(cast_unicode(func)) + arg_color(': (')
 
     if is_bound_method and isinstance(in_arg, int): #TODO what values could this have?
         in_arg += 1
@@ -98,13 +98,13 @@ def formatted_argspec(argspec, columns, config):
             color = bolds[color]
 
         if not py3:
-            s += color(inspect.strseq(arg, str).decode('utf8'))
+            s += color(cast_unicode(inspect.strseq(arg, str)))
         else:
             s += color(arg)
 
         if kw is not None:
             s += punctuation_color('=')
-            s += token_color(kw.decode('utf8'))
+            s += token_color(cast_unicode(kw))
 
         if i != len(args) - 1:
             s += punctuation_color(', ')
@@ -125,11 +125,11 @@ def formatted_argspec(argspec, columns, config):
             color = token_color
             if in_arg:
                 color = bolds[color]
-            s += color(arg.decode('utf8'))
+            s += color(cast_unicode(arg))
             default = kwonly_defaults.get(arg, marker)
             if default is not marker:
                 s += punctuation_color('=')
-                s += token_color(repr(default).decode('utf8'))
+                s += token_color(cast_unicode(repr(default)))
 
     if _kwargs:
         if args or _args or (py3 and kwonly):

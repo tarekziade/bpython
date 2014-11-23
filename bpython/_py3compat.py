@@ -42,3 +42,14 @@ if py3:
     from pygments.lexers import Python3Lexer as PythonLexer
 else:
     from pygments.lexers import PythonLexer
+
+DEFAULT_ENCODING = 'utf8'
+
+def decode(s, encoding=None):
+    encoding = encoding or DEFAULT_ENCODING
+    return s.decode(encoding, "replace")
+
+def cast_unicode(s, encoding=None):
+    if isinstance(s, bytes):
+        return decode(s, encoding)
+    return s

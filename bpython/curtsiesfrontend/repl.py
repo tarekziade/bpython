@@ -37,7 +37,7 @@ from bpython.formatter import BPythonFormatter
 from bpython import autocomplete, importcompletion
 from bpython import translations; translations.init()
 from bpython.translations import _
-from bpython._py3compat import py3
+from bpython._py3compat import py3, cast_unicode
 
 from bpython.curtsiesfrontend import replpainter as paint
 from bpython.curtsiesfrontend import sitefix; sitefix.monkeypatch_quit()
@@ -1126,10 +1126,10 @@ class Repl(BpythonRepl):
             info_max_rows = max(visible_space_above, visible_space_below)
             infobox = paint.paint_infobox(info_max_rows,
                                           int(width * self.config.cli_suggestion_width),
-                                          [s.decode('ascii') for s in self.matches_iter.matches],
+                                          [cast_unicode(s) for s in self.matches_iter.matches],
                                           self.argspec,
-                                          None if self.current_match is None else self.current_match.decode('ascii'),
-                                          None if self.docstring is None else self.docstring.decode('utf8'),
+                                          None if self.current_match is None else cast_unicode(self.current_match.decode),
+                                          None if self.docstring is None else cast_unicode(self.docstring.decode),
                                           self.config,
                                           self.matches_iter.completer.format if self.matches_iter.completer else None)
 
